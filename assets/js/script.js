@@ -7,6 +7,7 @@ const answerOne = document.getElementById("answer-one");
 const answerTwo = document.getElementById("answer-two");
 const answerThree = document.getElementById("answer-three");
 const answerFour = document.getElementById("answer-four");
+const buttonList = document.getElementsByClassName("all-btns");
 var time = document.getElementById("timer");
 var timer;
 var secondsLeft = 10;
@@ -32,7 +33,7 @@ function myFunction() {
   time.textContent = secondsLeft;
   if (secondsLeft <= 0) {
     clearInterval(timer);
-    time.textContent = "";
+    // time.textContent = "";
   }
 }
 
@@ -57,10 +58,25 @@ answerFour.addEventListener("click", evaluateAnswer);
 function evaluateAnswer(event) {
   console.log(event.target);
   if (event.target.getAttribute("data-iscorrect") === "true") {
-    alert("test");
+    rightAnswer();
+  } else {
+    wrongAnswer();
   }
-  //   } else ()
 }
+
+var rightAnswer = function () {
+  var correctAnswer = document.createElement("div");
+  correctAnswer.className = "format";
+  correctAnswer.textContent = "Correct!";
+  questionContainerEl.appendChild(correctAnswer);
+};
+
+var wrongAnswer = function () {
+  var incorrectAnswer = document.createElement("div");
+  incorrectAnswer.className = "format";
+  incorrectAnswer.textContent = "Wrong!";
+  questionContainerEl.appendChild(incorrectAnswer);
+};
 
 const questions = [
   {

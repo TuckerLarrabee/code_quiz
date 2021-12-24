@@ -9,11 +9,11 @@
   </head>
 
   <body>
-    <header>
-      <div>
+    <header class="top-bar">
+      <div class="high-scores">
         <a href="">View high scores</a>
       </div>
-      <div id="timer">
+      <div id="timer" class="clock">
         <!-- Show timer here -->
       </div>
     </header>
@@ -35,10 +35,12 @@
     </section>
     <div id="question-container" class="hidden">
       <h2 id="question-text"></h2>
-      <button id="answer-one"></button>
-      <button id="answer-two"></button>
-      <button id="answer-three"></button>
-      <button id="answer-four"></button>
+      <div class="all-btns">
+        <button id="answer-one" class="button button-one"></button>
+        <button id="answer-two" class="button button-two"></button>
+        <button id="answer-three" class="button button-three"></button>
+        <button id="answer-four" class="button button-four"></button>
+      </div>
     </div>
     <div id="results" class="hidden"></div>
 
