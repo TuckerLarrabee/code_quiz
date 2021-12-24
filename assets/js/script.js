@@ -7,6 +7,9 @@ const answerOne = document.getElementById("answer-one");
 const answerTwo = document.getElementById("answer-two");
 const answerThree = document.getElementById("answer-three");
 const answerFour = document.getElementById("answer-four");
+var time = document.getElementById("timer");
+var timer;
+var secondsLeft = 10;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
@@ -16,7 +19,21 @@ function beginQuiz() {
   startButtonEl.classList.add("hidden");
   console.log(openingTextEl);
   console.log(startButtonEl);
+  startTimer();
   displayQuestion();
+}
+
+function startTimer() {
+  timer = setInterval(myFunction, 1000);
+}
+
+function myFunction() {
+  secondsLeft--;
+  time.textContent = secondsLeft;
+  if (secondsLeft <= 0) {
+    clearInterval(timer);
+    time.textContent = "";
+  }
 }
 
 function displayQuestion() {
@@ -41,7 +58,8 @@ function evaluateAnswer(event) {
   console.log(event.target);
   if (event.target.getAttribute("data-iscorrect") === "true") {
     alert("test");
-  } else ()
+  }
+  //   } else ()
 }
 
 const questions = [
