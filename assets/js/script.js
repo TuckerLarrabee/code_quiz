@@ -8,16 +8,19 @@ const answerTwo = document.getElementById("answer-two");
 const answerThree = document.getElementById("answer-three");
 const answerFour = document.getElementById("answer-four");
 const buttonList = document.getElementsByClassName("all-btns");
+const nextButton = document.getElementById("next-question");
 var time = document.getElementById("timer");
 var timer;
-var secondsLeft = 10;
+var secondsLeft = 30;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
+nextButton.addEventListener("click", proceed);
 
 function beginQuiz() {
   openingTextEl.classList.add("hidden");
   startButtonEl.classList.add("hidden");
+  nextButton.classList.remove("hidden");
   console.log(openingTextEl);
   console.log(startButtonEl);
   startTimer();
@@ -59,9 +62,35 @@ function evaluateAnswer(event) {
   console.log(event.target);
   if (event.target.getAttribute("data-iscorrect") === "true") {
     rightAnswer();
+    questions.shift();
+    // buttonList.removeEventListener();
+    // displayQuestion();
+    // var answerRight = document.querySelector(".format");
+    // answerRight.remove();
   } else {
     wrongAnswer();
+    questions.shift();
+    var timeRemaining = time.textContent - 4;
+    secondsLeft = Math.max(1, timeRemaining);
+    // displayQuestion();
+    // var answerWrong = document.querySelector(".format");
+    // answerWrong.remove();
   }
+  answerOne.removeEventListener("click", evaluateAnswer);
+  answerTwo.removeEventListener("click", evaluateAnswer);
+  answerThree.removeEventListener("click", evaluateAnswer);
+  answerFour.removeEventListener("click", evaluateAnswer);
+}
+
+function proceed() {
+  displayQuestion();
+  answerOne.addEventListener("click", evaluateAnswer);
+  answerTwo.addEventListener("click", evaluateAnswer);
+  answerThree.addEventListener("click", evaluateAnswer);
+  answerFour.addEventListener("click", evaluateAnswer);
+  console.log("string");
+  var answerRight = document.querySelector(".format");
+  answerRight.remove();
 }
 
 var rightAnswer = function () {
@@ -77,6 +106,8 @@ var wrongAnswer = function () {
   incorrectAnswer.textContent = "Wrong!";
   questionContainerEl.appendChild(incorrectAnswer);
 };
+
+var nextQuestion = function () {};
 
 const questions = [
   {
@@ -101,7 +132,7 @@ const questions = [
 
   {
     question:
-      "A very usefful tool used during development and debugging for printing content to the debugger is:",
+      "A very useful tool used during development and debugging for printing content to the debugger is:",
     answers: [
       { text: "1. JavaScript", correct: false },
       { text: "2. terminal/bash", correct: false },

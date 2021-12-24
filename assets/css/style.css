@@ -63,3 +63,7 @@
   font-style: italic;
   font-size: 1.5rem;
 }
+
+#next-question {
+  margin: 20px 0 0 10px;
+}
