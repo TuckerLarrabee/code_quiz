@@ -91,3 +91,24 @@ form div {
 #yourScore {
   text-align: center;
 }
+
+.inline {
+  display: inline;
+}
+
+.score-list {
+  text-align: center;
+  border: 1px solid black;
+  margin: 0 auto;
+  width: 25%;
+}
+
+.centerButtons {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.centerButtons a {
+  text-decoration: none;
+}

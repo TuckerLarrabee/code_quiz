@@ -12,14 +12,23 @@ const nextButton = document.getElementById("next-question");
 const scoreForm = document.getElementById("initialsSubmit");
 const allDone = document.getElementById("allDone");
 const lastScreen = document.getElementById("lastScreen");
+const buttonHome = document.getElementById("return");
+const buttonClear = document.getElementById("clearMemory");
 var time = document.getElementById("timer");
 var timer;
 var secondsLeft = 60;
 var playerScore = 0;
+var scores = [];
+var highScoreCounter = 0;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
 nextButton.addEventListener("click", proceed);
+buttonHome.addEventListener("click", homeScreen);
+
+function homeScreen() {
+  lastScreen.classList.add("hidden");
+}
 
 function beginQuiz() {
   openingTextEl.classList.add("hidden");
@@ -127,15 +136,57 @@ var submitScore = function () {
 function storeScore(event) {
   event.preventDefault();
 
+  var scoreInitialsValue = document.querySelector(
+    "input[name='task-name']"
+  ).value;
+
+  var highScoreListUl = document.createElement("ol");
+  var highScoreList = document.createElement("li");
+  highScoreList.className = "score-list";
+
+  highScoreList.setAttribute("data-task-id", highScoreCounter);
+  highScoreList.innerHTML =
+    "<h3 class = 'inline'>" +
+    scoreInitialsValue +
+    ": </h3><span>" +
+    playerScore +
+    "</span>";
+
   allDone.classList.add("hidden");
-  var scoreString = document.getElementById("yourScore");
-  console.log(scoreString);
-  scoreString.classList.add("hidden");
+
+  lastScreen.appendChild(highScoreListUl);
+  highScoreListUl.appendChild(highScoreList);
+
+  buttonClear.classList.remove("hidden");
+  buttonHome.classList.remove("hidden");
+
+  highScoreCounter++;
+
+  var playerObject = {
+    name: scoreInitialsValue,
+    score: playerScore,
+    id: highScoreCounter,
+  };
+
+  scoreForm.reset();
+
+  var saveTasks = function () {
+    localStorage.setItem("players", JSON.stringify(playerObject));
+  };
+
+  scores.push(playerObject);
+  console.log(scores);
+
+  console.log(playerObject);
+  saveTasks();
+  //   scoreInitials.classList.add("hidden");
 
   var highScores = document.createElement("h1");
   highScores.className = "yourScore";
   highScores.textContent = "High Scores";
-  questionContainerEl.appendChild(highScores);
+  lastScreen.prepend(highScores);
+
+  scoreForm.classList.add("hidden");
 }
 
 const questions = [
