@@ -20,6 +20,7 @@ var secondsLeft = 60;
 var playerScore = 0;
 var scores = [];
 var highScoreCounter = 0;
+var highScoreListOl;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
@@ -77,6 +78,7 @@ function evaluateAnswer(event) {
     rightAnswer();
     questions.shift();
     if (questions.length < 1) {
+      //   displayPreviousHighScores();
       submitScore();
     }
     // playerScore increases by 25
@@ -87,12 +89,43 @@ function evaluateAnswer(event) {
     secondsLeft = Math.max(1, timeRemaining);
     if (questions.length < 1) {
       submitScore();
+      //   displayPreviousHighScores();
     }
   }
   answerOne.removeEventListener("click", evaluateAnswer);
   answerTwo.removeEventListener("click", evaluateAnswer);
   answerThree.removeEventListener("click", evaluateAnswer);
   answerFour.removeEventListener("click", evaluateAnswer);
+}
+
+function displayPreviousHighScores() {
+  var highScoreList;
+  //var scoreListItem = document.createElement("li");
+  if (JSON.parse(localStorage.getItem("players")) === null) {
+    highScoreListOl = document.createElement("ol");
+
+    lastScreen.appendChild(highScoreListOl);
+  } else {
+    var playerScoresArray = JSON.parse(localStorage.getItem("players"));
+    highScoreListOl = document.createElement("ol");
+    for (var i = 0; i < playerScoresArray.length; i++) {
+      var highScoreList = document.createElement("li");
+      highScoreList.className = "score-list";
+
+      highScoreList.setAttribute("data-task-id", highScoreCounter);
+      highScoreList.innerHTML =
+        "<div><h3 class = 'inline'>" +
+        playerScoresArray[i].name +
+        ": </h3><input type ='hidden' class = 'uniqueId' value = " +
+        playerScoresArray[i].id +
+        "></input><span>" +
+        playerScoresArray[i].score +
+        "</span></div>";
+
+      lastScreen.appendChild(highScoreListOl);
+      highScoreListOl.appendChild(highScoreList);
+    }
+  }
 }
 
 function proceed() {
@@ -140,27 +173,28 @@ function storeScore(event) {
     "input[name='task-name']"
   ).value;
 
-  var highScoreListUl = document.createElement("ol");
-  var highScoreList = document.createElement("li");
-  highScoreList.className = "score-list";
+  //   var highScoreListOl = document.createElement("ol");
+  //   var highScoreList = document.createElement("li");
+  //   highScoreList.className = "score-list";
 
-  highScoreList.setAttribute("data-task-id", highScoreCounter);
-  highScoreList.innerHTML =
-    "<h3 class = 'inline'>" +
-    scoreInitialsValue +
-    ": </h3><span>" +
-    playerScore +
-    "</span>";
+  //   highScoreList.setAttribute("data-task-id", highScoreCounter);
+  //   highScoreList.innerHTML =
+  //     "<h3 class = 'inline'>" +
+  //     scoreInitialsValue +
+  //     ": </h3><span>" +
+  //     playerScore +
+  //     "</span>";
 
   allDone.classList.add("hidden");
 
-  lastScreen.appendChild(highScoreListUl);
-  highScoreListUl.appendChild(highScoreList);
+  //   lastScreen.appendChild(highScoreListOl);
+  //   highScoreListOl.appendChild(highScoreList);
 
   buttonClear.classList.remove("hidden");
   buttonHome.classList.remove("hidden");
 
-  highScoreCounter++;
+  highScoreCounter = Date.now();
+  //   highScoreCounter++;
 
   var playerObject = {
     name: scoreInitialsValue,
@@ -170,16 +204,68 @@ function storeScore(event) {
 
   scoreForm.reset();
 
-  var saveTasks = function () {
-    localStorage.setItem("players", JSON.stringify(playerObject));
+  function saveScores(previousScores) {
+    if (previousScores === null) {
+      scores.push(playerObject);
+      localStorage.setItem("players", JSON.stringify(scores));
+    } else {
+      for (var i = 0; i < previousScores.length; i++) {
+        scores.push(previousScores[i]);
+      }
+      scores.push(playerObject);
+      localStorage.setItem("players", JSON.stringify(scores));
+    }
+  }
+
+  var getScore = function () {
+    var scoreList = JSON.parse(localStorage.getItem("players"));
+    return scoreList;
   };
 
-  scores.push(playerObject);
-  console.log(scores);
-
   console.log(playerObject);
-  saveTasks();
+  var scoreList = getScore();
+  saveScores(scoreList);
+  displayPreviousHighScores();
   //   scoreInitials.classList.add("hidden");
+  //   var playerScoresArray = JSON.parse(localStorage.getItem("players"));
+  //   for (var i = 0; i < playerScoresArray.length; i++) {
+  //     var uniqueId = document.getElementsByClassName("uniqueId");
+  //     // var uniqueId = document.querySelector("input");
+  //     // console.log(uniqueId[0].value);
+  //     console.log(uniqueId);
+
+  //     var arr = Array.prototype.slice.call(uniqueId);
+  //     console.log(arr);
+
+  //     var duplicateValue = false;
+
+  // if (arr.length > 0) {
+  // for (var j = 0; j < arr.length; j++) {
+  //   var jValue = arr[j].value;
+  //   console.log("this is a string " + jValue);
+  //   console.log(playerScoresArray[i].id);
+  //   if (jValue == playerScoresArray[i].id) {
+  //     duplicateValue = true;
+  //   }
+  //   if ((j = arr.length - 1)) {
+  //     if (duplicateValue === false) {
+  //       var highScoreList = document.createElement("li");
+  //       highScoreList.className = "score-list";
+
+  //       highScoreList.setAttribute("data-task-id", highScoreCounter);
+  //       highScoreList.innerHTML =
+  //         "<h3 class = 'inline'>" +
+  //         playerScoresArray[i].name +
+  //         ": </h3><span>" +
+  //         playerScoresArray[i].score +
+  //         "</span>";
+  //       highScoreListOl.appendChild(highScoreList);
+  //     }
+  //   }
+  // }
+  // }
+
+  lastScreen.appendChild(highScoreListOl);
 
   var highScores = document.createElement("h1");
   highScores.className = "yourScore";
