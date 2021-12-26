@@ -9,9 +9,13 @@ const answerThree = document.getElementById("answer-three");
 const answerFour = document.getElementById("answer-four");
 const buttonList = document.getElementsByClassName("all-btns");
 const nextButton = document.getElementById("next-question");
+const scoreForm = document.getElementById("initialsSubmit");
+const allDone = document.getElementById("allDone");
+const lastScreen = document.getElementById("lastScreen");
 var time = document.getElementById("timer");
 var timer;
-var secondsLeft = 30;
+var secondsLeft = 60;
+var playerScore = 0;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
@@ -63,18 +67,18 @@ function evaluateAnswer(event) {
   if (event.target.getAttribute("data-iscorrect") === "true") {
     rightAnswer();
     questions.shift();
-    // buttonList.removeEventListener();
-    // displayQuestion();
-    // var answerRight = document.querySelector(".format");
-    // answerRight.remove();
+    if (questions.length < 1) {
+      submitScore();
+    }
+    // playerScore increases by 25
   } else {
     wrongAnswer();
     questions.shift();
-    var timeRemaining = time.textContent - 4;
+    var timeRemaining = time.textContent - 9;
     secondsLeft = Math.max(1, timeRemaining);
-    // displayQuestion();
-    // var answerWrong = document.querySelector(".format");
-    // answerWrong.remove();
+    if (questions.length < 1) {
+      submitScore();
+    }
   }
   answerOne.removeEventListener("click", evaluateAnswer);
   answerTwo.removeEventListener("click", evaluateAnswer);
@@ -98,6 +102,7 @@ var rightAnswer = function () {
   correctAnswer.className = "format";
   correctAnswer.textContent = "Correct!";
   questionContainerEl.appendChild(correctAnswer);
+  playerScore = playerScore + 25;
 };
 
 var wrongAnswer = function () {
@@ -107,7 +112,31 @@ var wrongAnswer = function () {
   questionContainerEl.appendChild(incorrectAnswer);
 };
 
-var nextQuestion = function () {};
+var submitScore = function () {
+  questionContainerEl.classList.add("hidden");
+  nextButton.classList.add("hidden");
+  scoreForm.classList.remove("hidden");
+  allDone.classList.remove("hidden");
+  var yourScore = document.createElement("p");
+  yourScore.setAttribute("id", "yourScore");
+  yourScore.innerHTML = "Your score is " + playerScore + ".";
+  lastScreen.appendChild(yourScore);
+  scoreForm.addEventListener("submit", storeScore);
+};
+
+function storeScore(event) {
+  event.preventDefault();
+
+  allDone.classList.add("hidden");
+  var scoreString = document.getElementById("yourScore");
+  console.log(scoreString);
+  scoreString.classList.add("hidden");
+
+  var highScores = document.createElement("h1");
+  highScores.className = "yourScore";
+  highScores.textContent = "High Scores";
+  questionContainerEl.appendChild(highScores);
+}
 
 const questions = [
   {

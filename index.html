@@ -23,7 +23,7 @@
         <h1>Coding Quiz Challenge</h1>
       </section>
       <section>
-        <p>
+        <p class="quiz-prompt">
           Try to answer the following code-related questions within the time
           limit. Keep in mind that incorrect answers will penalize your
           score/time by ten seconds!
@@ -44,6 +44,18 @@
     </div>
     <div id="results" class="hidden"></div>
     <button class="hidden" id="next-question">Next Question</button>
+    <!-- <button class="hidden" id="score-screen">Submit Your Score!</button> -->
+    <div id="lastScreen">
+      <h1 class="hidden" id="allDone">All Done!</h1>
+    </div>
+    <form id="initialsSubmit" class="hidden">
+      <div>
+        <input type="text" name="task-name" placeholder="Enter Your Initials" />
+      </div>
+      <div>
+        <button id="score-screen" type="submit">Submit Your Score</button>
+      </div>
+    </form>
 
     <script src="./assets/js/script.js"></script>
   </body>

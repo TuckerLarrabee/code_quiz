@@ -11,6 +11,18 @@
   flex: 1;
 }
 
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.quiz-prompt {
+  width: 60%;
+  margin: 0 auto;
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
 .clock {
   text-align: right;
 }
@@ -66,4 +78,16 @@
 
 #next-question {
   margin: 20px 0 0 10px;
+}
+
+form div {
+  display: inline;
+}
+
+#initialsSubmit {
+  text-align: center;
+}
+
+#yourScore {
+  text-align: center;
 }
