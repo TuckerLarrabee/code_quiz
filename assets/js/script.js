@@ -17,7 +17,7 @@ const buttonScores = document.getElementById("high-scores");
 const buttonClear = document.getElementById("clearMemory");
 var time = document.getElementById("timer");
 var timer;
-var secondsLeft = 10;
+var secondsLeft = 60;
 var playerScore = 0;
 var scores = [];
 var highScoreCounter = 0;
@@ -128,6 +128,7 @@ function evaluateAnswer(event) {
     if (questions.length < 1) {
       //   displayPreviousHighScores();
       submitScore();
+      clearInterval(timer);
     }
     // playerScore increases by 25
   } else {
@@ -137,6 +138,7 @@ function evaluateAnswer(event) {
     secondsLeft = Math.max(1, timeRemaining);
     if (questions.length < 1) {
       submitScore();
+      clearInterval(timer);
       //   displayPreviousHighScores();
     }
   }
