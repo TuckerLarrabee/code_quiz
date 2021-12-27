@@ -112,3 +112,11 @@ form div {
 .centerButtons a {
   text-decoration: none;
 }
+
+#clearMemory a {
+  text-decoration: none;
+}
+
+#clearFormatting {
+  text-align: center;
+}

@@ -13,22 +13,70 @@ const scoreForm = document.getElementById("initialsSubmit");
 const allDone = document.getElementById("allDone");
 const lastScreen = document.getElementById("lastScreen");
 const buttonHome = document.getElementById("return");
+const buttonScores = document.getElementById("high-scores");
 const buttonClear = document.getElementById("clearMemory");
 var time = document.getElementById("timer");
 var timer;
-var secondsLeft = 60;
+var secondsLeft = 10;
 var playerScore = 0;
 var scores = [];
 var highScoreCounter = 0;
 var highScoreListOl;
+var scoreItems;
 // const resultsEl = document.getElementById("results");
 
 startButtonEl.addEventListener("click", beginQuiz);
 nextButton.addEventListener("click", proceed);
-buttonHome.addEventListener("click", homeScreen);
+buttonScores.addEventListener("click", showHighScores);
+buttonClear.addEventListener("click", clearStorage);
 
-function homeScreen() {
-  lastScreen.classList.add("hidden");
+function clearStorage() {
+  localStorage.clear();
+  alert("All high scores have been erased!");
+}
+
+function showHighScores() {
+  buttonScores.removeEventListener("click", showHighScores);
+  questionContainerEl.classList.add("hidden");
+  nextButton.classList.add("hidden");
+  scoreForm.classList.remove("hidden");
+  openingTextEl.classList.add("hidden");
+  startButtonEl.classList.add("hidden");
+  buttonHome.classList.remove("hidden");
+  scoreForm.classList.add("hidden");
+
+  var highScores = document.createElement("h1");
+  highScores.className = "yourScore";
+  highScores.textContent = "High Scores";
+  lastScreen.prepend(highScores);
+
+  var highScoreList;
+  //var scoreListItem = document.createElement("li");
+  if (JSON.parse(localStorage.getItem("players")) === null) {
+    highScoreListOl = document.createElement("ol");
+
+    lastScreen.appendChild(highScoreListOl);
+  } else {
+    var playerScoresArray = JSON.parse(localStorage.getItem("players"));
+    highScoreListOl = document.createElement("ol");
+    for (var i = 0; i < playerScoresArray.length; i++) {
+      var highScoreList = document.createElement("li");
+      highScoreList.className = "score-list";
+
+      highScoreList.setAttribute("data-task-id", highScoreCounter);
+      highScoreList.innerHTML =
+        "<div><h3 class = 'inline'>" +
+        playerScoresArray[i].name +
+        ": </h3><input type ='hidden' class = 'uniqueId' value = " +
+        playerScoresArray[i].id +
+        "></input><span>" +
+        playerScoresArray[i].score +
+        "</span></div>";
+
+      lastScreen.appendChild(highScoreListOl);
+      highScoreListOl.appendChild(highScoreList);
+    }
+  }
 }
 
 function beginQuiz() {
@@ -168,6 +216,7 @@ var submitScore = function () {
 
 function storeScore(event) {
   event.preventDefault();
+  buttonScores.removeEventListener("click", showHighScores);
 
   var scoreInitialsValue = document.querySelector(
     "input[name='task-name']"
